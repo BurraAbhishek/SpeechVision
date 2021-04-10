@@ -4,7 +4,7 @@ An AI-based talking camera Flutter app which helps the blind and visually impair
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is still under development.
 
 A few resources to get you started if this is your first Flutter project:
 
