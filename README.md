@@ -1,4 +1,4 @@
-# speechvision
+# SpeechVision
 
 An AI-based talking camera Flutter app which helps the blind and visually impaired community perceive their surroundings independently.
 
