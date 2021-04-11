@@ -18,3 +18,9 @@ samples, guidance on mobile development, and a full API reference.
 ## Note:
 
 Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC.
+
+## License:
+
+Unless otherwise noted, the source code is licensed under the MIT License.
+
+## Credits:
