@@ -23,6 +23,8 @@ Flutter and the related logo are trademarks of Google LLC. We are not endorsed b
 
 Unless otherwise noted, the source code is licensed under the MIT License.
 
+To use the app icon, you should retain the LICENSE.md file or obtain permission from the app icon designer (See Credits).
+
 ## Credits:
 
 App icon: Designed and Contributed by [Mohmed Ishak](https://github.com/ishakmohmed)
