@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:io';
 
 class Home extends StatefulWidget {
@@ -11,16 +10,11 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-enum TtsState {playing, stopped, paused, continued}
-
 class _HomeState extends State<Home> {
   bool _loading = true;
   File _image;
   List _output;
   final picker = ImagePicker();
-  FlutterTts flutterTts = FlutterTts();
-  TtsState ttsState = TtsState.stopped;
-  String outputText = "Loading...";
   @override
   void initState(){
     super.initState();
@@ -67,32 +61,6 @@ class _HomeState extends State<Home> {
     });
     classifyImage(_image);
   }
-  // Speak a text
-  Future _speak() async {
-    await flutterTts.setSpeechRate(0.8);
-    await flutterTts.speak(outputText);
-  }
-  // Generate result
-  Text getResult() {
-    if (_output.length > 0) {
-      setState(() {
-        outputText = 'The object is: ${_output[0]['detectedClass']}!';
-      });
-    } else {
-      setState(() {
-        outputText = 'No object detected.';
-      });
-    }
-    _speak();
-    return Text(
-      outputText,
-      style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight:
-          FontWeight.w400),
-    );
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +106,15 @@ class _HomeState extends State<Home> {
         height: 25,thickness: 1,
       ),
       _output != null
-          ? getResult()
+          ? Text(
+        'The object is: ${_output[0]['detectedClass']}!',
+        //'The object is: ${jsonEncode(_output)}',
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight:
+            FontWeight.w400),
+      )
           : Container(),
       Divider(
         height: 25,
