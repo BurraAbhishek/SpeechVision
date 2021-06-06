@@ -74,13 +74,20 @@ class _HomeState extends State<Home> {
   }
   // Generate result
   Text getResult() {
-    if (_output.length > 0) {
+    // Known object detected
+    if (_output.length > 0 && _output[0]['confidenceInClass'] > 0.58) {
       setState(() {
-        outputText = 'The object is: ${_output[0]['detectedClass']}!';
+        outputText = 'There is ${_output[0]['detectedClass']} ahead of you.';
       });
+      // Unknown object ahead
+    } else if(_output.length > 0) {
+      setState(() {
+        outputText = 'Obstacle ahead!';
+      });  
+      // Nothing ahead - user can move forward
     } else {
       setState(() {
-        outputText = 'No object detected.';
+        outputText = 'Nothing ahead.';
       });
     }
     _speak();
@@ -128,8 +135,8 @@ class _HomeState extends State<Home> {
     children: [
     Container(
     height: 250, width: 250,
-    child: ClipRRect(       borderRadius:
-    BorderRadius.circular(30),
+    child: ClipRRect(       
+      borderRadius: BorderRadius.circular(30),
       child: Image.file(
         _image,
         fit: BoxFit.fill,
