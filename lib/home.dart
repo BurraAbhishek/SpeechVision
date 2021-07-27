@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-enum TtsState {playing, stopped, paused, continued}
+enum TtsState { playing, stopped, paused, continued }
 
 class _HomeState extends State<Home> {
   bool _loading = true;
@@ -21,36 +21,43 @@ class _HomeState extends State<Home> {
   FlutterTts flutterTts = FlutterTts();
   TtsState ttsState = TtsState.stopped;
   String outputText = "Loading...";
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    loadModel().then((value){
+    loadModel().then((value) {
       setState(() {});
     });
   }
+
   @override
   // Dispose the image and prepare for the next instance
   void dispose() {
     super.dispose();
     Tflite.close();
   }
+
   // Classify the image using the trained model
   classifyImage(File image) async {
     var output = await Tflite.detectObjectOnImage(
-        path: image.path,       // required
+        path: image.path,
+        // required
         //path: "assets/download.jpeg",
         model: "SSDMobileNet",
         imageMean: 127.5,
         imageStd: 127.5,
-        threshold: 0.4,       // defaults to 0.1
-        numResultsPerClass: 2,// defaults to 5
-        asynch: true          // defaults to true
-    );
+        threshold: 0.4,
+        // defaults to 0.1
+        numResultsPerClass: 2,
+        // defaults to 5
+        asynch: true // defaults to true
+        );
     setState(() {
       _output = output;
       _loading = false;
     });
   }
+
   // Load the model into the running instance
   loadModel() async {
     await Tflite.loadModel(
@@ -58,6 +65,7 @@ class _HomeState extends State<Home> {
       labels: 'assets/ssd_mobilenet_labels.txt',
     );
   }
+
   // Capture an image from the camera
   pickImage() async {
     var image = await picker.getImage(source: ImageSource.camera);
@@ -67,11 +75,13 @@ class _HomeState extends State<Home> {
     });
     classifyImage(_image);
   }
+
   // Speak a text
   Future _speak() async {
     await flutterTts.setSpeechRate(0.8);
     await flutterTts.speak(outputText);
   }
+
   // Generate result
   Text getResult() {
     // Known object detected
@@ -80,10 +90,10 @@ class _HomeState extends State<Home> {
         outputText = 'There is ${_output[0]['detectedClass']} ahead of you.';
       });
       // Unknown object ahead
-    } else if(_output.length > 0) {
+    } else if (_output.length > 0) {
       setState(() {
         outputText = 'Obstacle ahead!';
-      });  
+      });
       // Nothing ahead - user can move forward
     } else {
       setState(() {
@@ -94,93 +104,98 @@ class _HomeState extends State<Home> {
     return Text(
       outputText,
       style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight:
-          FontWeight.w400),
+          color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text(
-        'SpeechVision',
-        style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 24,
-        letterSpacing: 0.8),
-    ),),
-        body: Container(
+          'SpeechVision',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              letterSpacing: 0.8),
+        ),
+      ),
+      body: Container(
         color: Colors.blue.withOpacity(0.9),
-    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 50),
-    child: Container(
-    alignment: Alignment.center,
-    padding: EdgeInsets.all(30),
-    decoration: BoxDecoration(
-    color: Color(0xFF2A363B),
-    borderRadius: BorderRadius.circular(30),
-    ),
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    Container(
-    child: Center(
-    child: _loading == true
-    ? null //show nothing if no picture selected
-        : Container(
-    child: Column(
-    children: [
-    Container(
-    height: 250, width: 250,
-    child: ClipRRect(       
-      borderRadius: BorderRadius.circular(30),
-      child: Image.file(
-        _image,
-        fit: BoxFit.fill,
-      ),),),
-      Divider(
-        height: 25,thickness: 1,
-      ),
-      _output != null
-          ? getResult()
-          : Container(),
-      Divider(
-        height: 25,
-        thickness: 1,
-      ),],),),),),
-      Container(
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: pickImage, //no parenthesis
-              child: Container(
-                width:
-                MediaQuery.of(context).size.width - 200,
-                alignment: Alignment.center,
-                padding:
-                EdgeInsets.symmetric(horizontal: 24,
-                    vertical: 17),
-                decoration: BoxDecoration(
-                    color: Colors.blueGrey[600],
-                    borderRadius:
-                    BorderRadius.circular(15)),
-                child: Text(
-                  'Take A Photo',
-                  style: TextStyle(color: Colors.white,
-                      fontSize: 16),
-                ),),),
-            SizedBox(
-              height: 30,
-            ),
-          ],
+        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 50),
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(30),
+          decoration: BoxDecoration(
+            color: Color(0xFF2A363B),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Center(
+                  child: _loading == true
+                      ? null //show nothing if no picture selected
+                      : Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 250,
+                                width: 250,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Image.file(
+                                    _image,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Divider(
+                                height: 25,
+                                thickness: 1,
+                              ),
+                              _output != null ? getResult() : Container(),
+                              Divider(
+                                height: 25,
+                                thickness: 1,
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: pickImage, //no parenthesis
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 200,
+                        alignment: Alignment.center,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 17),
+                        decoration: BoxDecoration(
+                            color: Colors.blueGrey[600],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Text(
+                          'Take A Photo',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ],),
-    ),
-        ),
     );
   }
 }
