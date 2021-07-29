@@ -23,4 +23,6 @@ Flutter and the related logo are trademarks of Google LLC. We are not endorsed b
 
 Unless otherwise noted, the source code is licensed under the [MIT License](https://github.com/BurraAbhishek/SpeechVision/blob/main/LICENSE).
 
+The trained models in the assets directory were [created by TensorFlow](https://tfhub.dev/tensorflow/lite-model/ssd_mobilenet_v1/1/metadata/2) and licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
 The new app icon is licensed under the [Creative Commons CC0 License](https://tldrlegal.com/license/creative-commons-cc0-1.0-universal).
