@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
 
   // Capture an image from the camera
   pickImage() async {
-    var image = await picker.getImage(source: ImageSource.camera);
+    var image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) return null;
     setState(() {
       _image = File(image.path);
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
 
   // Speak a text
   Future _speak() async {
-    await flutterTts.setSpeechRate(0.8);
+    await flutterTts.setSpeechRate(0.6);
     await flutterTts.speak(outputText);
   }
 
